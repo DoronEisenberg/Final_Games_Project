@@ -1,3 +1,8 @@
 body {
-    background-color: ghostwhite;
+    background-color: rgb(202, 202, 202);
+}
+
+.logo {
+    width: 100px;
+    height: auto;
 }
