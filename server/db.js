@@ -28,11 +28,30 @@ function addUser({ firstname, lastname, email, password }) {
 ////-----------------------------------------  Get User Login Details
 
 function getUserDetails(email) {
-    return db.query("SELECT * FROM users WHERE email = $1", [email]);
-    // .then((result) => result.rows[0]);
+    return db
+        .query("SELECT * FROM users WHERE email=$1", [email])
+        .then((results) => {
+            if (results.rows.length == 0) {
+                throw new Error("email does not exist");
+            }
+            return results.rows[0];
+        })
+        .catch((err) => console.log(err));
+}
+
+function authenticateUser({ email, password }) {
+    return function getUserDetails(email) {
+        email.then((user) => {
+            if (!bcrypt.compareSync(password, user.password)) {
+                throw new Error("password incorrect");
+            }
+            return user;
+        });
+    };
 }
 
 module.exports = {
+    authenticateUser,
     addUser,
     getUserDetails,
 };

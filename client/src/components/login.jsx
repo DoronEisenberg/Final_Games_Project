@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default class Login extends Component {
     constructor(props) {
@@ -89,7 +89,7 @@ export default class Login extends Component {
                     <button onClick={(e) => this.handleSubmit(e)}>
                         Login Now
                     </button>
-                    <Link to="/registration">Create an Account</Link>
+                    <Link to="/register">Create an Account</Link>
                 </div>
             </div>
         );

@@ -1,7 +1,7 @@
 import Registration from "./registration";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Login from "./Login";
+import Login from "./login";
 
 export default function Welcome() {
     return (

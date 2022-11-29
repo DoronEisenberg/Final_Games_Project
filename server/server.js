@@ -34,7 +34,9 @@ app.use(compression());
 app.use(express.static(path.join(__dirname, "..", "client", "public")));
 
 //--------------------------------------------- Registration
-
+app.get("/", (req, res) => {
+    res.redirect("/login");
+});
 app.post("/register", (req, res) => {
     //getting values from the form
     const { firstName, lastName, email, password } = req.body;
