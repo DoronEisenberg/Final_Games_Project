@@ -5,12 +5,11 @@ const compression = require("compression");
 const path = require("path");
 const bcrypt = require("bcryptjs");
 const { PORT = 3001 } = process.env;
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
 
-const { addUser, getUserDetails } = require("./db");
+const { addUser, getUserByEmail, findUserById } = require("./db");
 
 //-------------------------------------------- Middleware
+/*
 app.use((req, res, next) => {
     console.log("---------------------");
     console.log("req.url:", req.url);
@@ -18,7 +17,7 @@ app.use((req, res, next) => {
     console.log("req.session:", req.session);
     console.log("---------------------");
     next();
-});
+});*/
 
 //------------------------------------------------ Cookie Session
 const cookieSession = require("cookie-session");
@@ -33,14 +32,17 @@ app.use(compression());
 
 app.use(express.static(path.join(__dirname, "..", "client", "public")));
 
+app.use(express.urlencoded({ extended: false }));
+// json parser
+app.use(express.json());
+
 //--------------------------------------------- Registration
-app.get("/", (req, res) => {
-    res.redirect("/login");
-});
+
 app.post("/register", (req, res) => {
     //getting values from the form
     const { firstName, lastName, email, password } = req.body;
 
+    //if firstname is empty then give back an error
     if (firstName === undefined) {
         res.json({ success: false, error: "please fill the firstname" });
         return false;
@@ -58,6 +60,8 @@ app.post("/register", (req, res) => {
         return false;
     }
 
+    //now we got all the data, we need to add a new user
+    //first we need to hash the password, we cannot the password with clean letters
     const salt = bcrypt.genSaltSync();
     const hashedRegisterInput = bcrypt.hashSync(password, salt);
 
@@ -83,31 +87,91 @@ app.post("/register", (req, res) => {
         });
 });
 
+//------------------------------------------------ Login
+app.post("/login", (req, res) => {
+    const { email, password } = req.body;
+    console.log("req.bodyEmail server", req.body);
+
+    getUserByEmail(email).then((result) => {
+        if (!result) {
+            res.json({ success: false, error: "Email doesn't exist" });
+
+            return false;
+        }
+        console.log("userData from getByEmail server", result);
+        const comparePass = bcrypt.compareSync(password, result.password);
+        console.log("compareee", comparePass);
+        if (!comparePass) {
+            return res.json({
+                success: false,
+                error: "Wrong password",
+            });
+        }
+
+        req.session.userId = result.id;
+
+        console.log("session after login", req.session);
+        return res.json({
+            success: true,
+            data: result.id,
+        });
+    });
+});
+
+//////// Get the user information //////
+
+app.get("/user", (req, res) => {
+    //res.json("test");
+
+    findUserById(req.session.userId).then((userData) => {
+        console.log("user data", userData);
+        res.json(userData);
+    });
+});
+
 //check if user is logged in from the session
 app.get("/user/id.json", (req, res) => {
-    console.log(req.session.userId);
+    //console.log(req.session.userId);
     res.json({
         userId: req.session.userId,
     });
 });
 
-//------------------------------------------------ Login
-app.post("/login", (req, res) => {
-    const { email, password } = req.body;
+//////// upload the Picture ///////
+/*
+app.post("/profilePicUpload", uploader.single("file"), (req, res) => {
+    console.log(req.file);
+    const { filename, mimetype, size, path } = req.file;
 
-    getUserDetails(email).then((objWithPass) => {
-        if (
-            objWithPass.rows[0] ||
-            bcrypt.compareSync(password, objWithPass.rows[0].password)
-        ) {
-            req.session.userId = objWithPass.rows[0];
-            res.json({ success: true });
-        } else {
-            res.json({ success: false });
-        }
-    });
+    const promise = s3 // this to send to aws, different for other cloud storage
+        .putObject({
+            Bucket: "spicedling",
+            ACL: "public-read",
+            Key: filename,
+            Body: fs.createReadStream(path),
+            ContentType: mimetype,
+            ContentLength: size,
+        })
+        .promise();
+
+    promise
+        .then(() => {
+            let pictureData = {
+                id: req.session.userID,
+                user_picture_url: `https://s3.amazonaws.com/spicedling/${req.file.filename}`,
+            };
+            addProfilePic(pictureData).then((userData) => {
+                res.json(userData.rows[0]);
+            });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
 });
 
+*/
+
+//catching the home page
 app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "..", "client", "index.html"));
 });

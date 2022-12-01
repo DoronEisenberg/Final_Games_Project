@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default class Registration extends Component {
     //here we initialize the component
@@ -10,8 +10,6 @@ export default class Registration extends Component {
             error: false,
         };
 
-        console.log(this.state);
-
         //------------------------------------------ Bind methods
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -19,8 +17,8 @@ export default class Registration extends Component {
 
     //function called everz time the input text is changed
     handleInputChange(e) {
-        console.log(e.currentTarget.value);
         const text = e.currentTarget.value;
+
         this.setState({
             [e.currentTarget.name]: text,
         });
@@ -29,7 +27,7 @@ export default class Registration extends Component {
     //when user click submit, trz to add a new user to the database
     handleSubmit() {
         console.log(this.state);
-
+        //post request to server.js /register
         fetch("/register", {
             method: "POST",
             body: JSON.stringify(this.state),
@@ -37,7 +35,6 @@ export default class Registration extends Component {
         })
             .then((res) => res.json())
             .then((response) => {
-                //console.log(response);
                 if (response.success) {
                     //"success true"
                     location.reload();
@@ -48,7 +45,6 @@ export default class Registration extends Component {
                     this.setState({
                         error: response.error,
                     });
-                    console.log(this.state);
                 }
             });
     }
@@ -57,6 +53,23 @@ export default class Registration extends Component {
         return (
             <div>
                 <h1>This is the registration component</h1>
+                <h5>
+                    The competences required by a teacher are affected by the
+                    <br></br>
+                    different ways in which the role is understood around the
+                    <br></br>
+                    world.
+                    <br></br>
+                    Broadly, there seem to be four models:
+                    <br></br>
+                    the teacher as manager of instruction;
+                    <br></br>
+                    the teacher as caring person;
+                    <br></br>
+                    the teacher as expert learner;
+                    <br></br>
+                    and the teacher as cultural and civic person.
+                </h5>
                 <div className="error">{this.state.error}</div>
                 <div>
                     <input
@@ -94,6 +107,9 @@ export default class Registration extends Component {
                     <button onClick={(e) => this.handleSubmit(e)}>
                         Register Now
                     </button>
+                    <p>
+                        <Link to="/login">Click here to Log in!</Link>
+                    </p>
                 </div>
             </div>
         );

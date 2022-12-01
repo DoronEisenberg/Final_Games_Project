@@ -32,7 +32,6 @@ export default class Login extends Component {
         e.preventDefault();
 
         console.log("About to submit the form!");
-        console.log(this.state);
 
         const registeredUser = {};
 
@@ -46,20 +45,20 @@ export default class Login extends Component {
             body: JSON.stringify(registeredUser),
             headers: { "Content-Type": "application/json" },
         })
+            .then((res) => res.json())
             .then((response) => {
-                console.log("response is: ", response.ok);
+                console.log("response is: ", response);
 
-                if (response.ok) {
+                if (response.success) {
                     // User is logged-in
                     // -> reload page to show logged-in
-                    location.href = "/";
+                    location.reload();
+                    //console.log("ok!");
                 } else {
+                    console.log("no!");
                     // Update 'error' property in state
-                    this.setState({ error: true });
+                    this.setState({ error: response.error });
                 }
-            })
-            .catch((error) => {
-                console.log("Error (/login): ", error);
             });
     }
 
@@ -68,29 +67,32 @@ export default class Login extends Component {
             <div>
                 <h1>This is the login component</h1>
                 <div className="error">{this.state.error}</div>
-
-                <div>
-                    <input
-                        type="email"
-                        name="email"
-                        onChange={this.handleInputChange}
-                        placeholder="Email"
-                    ></input>
-                </div>
-                <div>
-                    <input
-                        type="password"
-                        name="password"
-                        onChange={this.handleInputChange}
-                        placeholder="Password"
-                    ></input>
-                </div>
-                <div>
-                    <button onClick={(e) => this.handleSubmit(e)}>
-                        Login Now
-                    </button>
+                <form>
+                    <div>
+                        <input
+                            type="email"
+                            name="email"
+                            onChange={this.handleChange}
+                            value={this.state.email}
+                            placeholder="Email"
+                        ></input>
+                    </div>
+                    <div>
+                        <input
+                            type="password"
+                            name="password"
+                            onChange={this.handleChange}
+                            value={this.state.password}
+                            placeholder="Password"
+                        ></input>
+                    </div>
+                    <div>
+                        <button onClick={this.handleSubmit}>Login Now</button>
+                    </div>
+                </form>
+                <p>
                     <Link to="/register">Create an Account</Link>
-                </div>
+                </p>
             </div>
         );
     }

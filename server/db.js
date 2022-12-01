@@ -25,6 +25,20 @@ function addUser({ firstname, lastname, email, password }) {
     );
 }
 
+////-----------------------------------------   Get user data
+
+function findUserById(userId) {
+    return db
+        .query("SELECT * FROM users WHERE id=$1", [userId])
+        .then((results) => {
+            if (results.rows.length == 0) {
+                throw new Error("id does not exist");
+            }
+            return results.rows[0];
+        })
+        .catch((err) => console.log(err));
+}
+
 ////-----------------------------------------  Get User Login Details
 
 function getUserDetails(email) {
@@ -41,6 +55,7 @@ function getUserDetails(email) {
 
 function authenticateUser({ email, password }) {
     return function getUserDetails(email) {
+        console.log(email);
         email.then((user) => {
             if (!bcrypt.compareSync(password, user.password)) {
                 throw new Error("password incorrect");
@@ -49,9 +64,26 @@ function authenticateUser({ email, password }) {
         });
     };
 }
+function getUserByEmail(email) {
+    return db
+        .query("SELECT * FROM users WHERE email = $1 ", [email])
+        .then((result) => {
+            console.log("user by email db, ", result.rowCount);
+            console.log("email doesnt exist");
+            if (result.rowCount === 0) {
+                console.log("email doesnt exist");
+                return false;
+            }
+            console.log("user by email db, ", result.rows[0]);
+            return result.rows[0];
+        })
+        .catch((error) => console.log(error));
+}
 
 module.exports = {
     authenticateUser,
     addUser,
     getUserDetails,
+    getUserByEmail,
+    findUserById,
 };

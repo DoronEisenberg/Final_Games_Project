@@ -1,8 +1,43 @@
 body {
     background-color: rgb(202, 202, 202);
+    flex-wrap: wrap;
+}
+
+header {
+    display: flex;
+    background-color: #2f97c1;
+    border: 5px solid #aee5d8;
+    margin: 20px;
+    height: 100px;
+}
+
+main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    background-color: #82bbbf;
+    padding: 50px 50px 50px 50px;
+    border: 5px solid #f9cfcb;
+    margin: 20px;
+    font-family: fantasy;
 }
 
 .logo {
     width: 100px;
     height: auto;
+}
+
+button {
+    display: flex;
+    text-decoration-style: none;
+}
+
+footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 5px solid #f9cfcb;
+    background-color: #9ca590;
+    margin: 20px;
 }

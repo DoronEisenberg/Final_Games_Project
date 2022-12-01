@@ -1,11 +1,14 @@
 import { createRoot } from "react-dom/client";
+//importing welcome component
 import Welcome from "./components/welcome";
+import App from "./components/app/app";
 
 //create root element main
 const root = createRoot(document.querySelector("main"));
 
-//check if user is already logged in, fetch data ffrom server
+//checking if user is already logged in, fetch data from server
 fetch("/user/id.json")
+    //I get the response data, and before using it I encode as json
     .then((response) => response.json())
     .then((data) => {
         //if no user id session is saved in the browser, show the welcome component
@@ -13,11 +16,6 @@ fetch("/user/id.json")
             root.render(<Welcome />);
         } else {
             //otherwise show the logo
-            root.render(
-                <div>
-                    <img className="logo" src="/Logo.png" alt="logo" />
-                    <p>Hi! Welcome back</p>
-                </div>
-            );
+            root.render(<App />);
         }
     });
