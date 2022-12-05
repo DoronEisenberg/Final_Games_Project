@@ -118,6 +118,15 @@ app.post("/login", (req, res) => {
     });
 });
 
+//---------------------------------------------Logout
+app.get("/logout", (req, res) => {
+    req.session = null;
+    console.log("logout session", req.session);
+    return res.json({
+        userId: null,
+    });
+});
+///////
 //////// Get the user information //////
 
 app.get("/user", (req, res) => {

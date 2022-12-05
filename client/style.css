@@ -41,3 +41,8 @@ footer {
     background-color: #9ca590;
     margin: 20px;
 }
+
+#logout-button {
+    display: flex;
+    text-decoration-style: none;
+}

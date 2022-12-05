@@ -1,5 +1,7 @@
 import { Component } from "react";
 import Logo from "../logo/logo";
+import Logout from "../logout/logout";
+//import PictureUploader from "./PictureUploader";
 export default class App extends Component {
     //initializing state with null
     constructor(props) {
@@ -22,6 +24,14 @@ export default class App extends Component {
 
     render() {
         //passing state to child component
-        return <Logo user={this.state.currentUser} />;
+
+        return (
+            <div>
+                <Logo user={this.state.currentUser} />
+                <footer>
+                    <Logout />
+                </footer>
+            </div>
+        );
     }
 }
