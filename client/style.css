@@ -11,6 +11,11 @@ header {
     height: 100px;
 }
 
+.profile-img {
+    width: 100px;
+    height: auto;
+}
+
 main {
     display: flex;
     align-items: center;
@@ -24,7 +29,7 @@ main {
 }
 
 .logo {
-    width: 100px;
+    width: 200px;
     height: auto;
 }
 

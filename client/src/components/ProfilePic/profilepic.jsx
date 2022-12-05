@@ -1,8 +1,13 @@
 export default function ProfilePic(props) {
     return (
-        <div className="profile-img">
-            <img src={props.imgUrl} onClick={() => toggleOpenUploader()} />
-            {props.firstname} {props.lastname}
+        <div>
+            <img
+                className="profile-img"
+                src={"./ProfilePhotos/cats.JPG"}
+                onClick={() => uploaderOpen()}
+            />
+            <br></br>
+            {props.user?.firstname} {props.user?.lastname}
         </div>
     );
 }
