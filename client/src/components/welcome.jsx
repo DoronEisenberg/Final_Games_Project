@@ -27,10 +27,7 @@ export default function Welcome() {
                             path="/"
                             element={<Registration />}
                         ></Route>
-                        <Route
-                            path="/register"
-                            element={<Registration />}
-                        ></Route>
+
                         <Route path="/login" element={<Login />}></Route>
                     </Routes>
                 </BrowserRouter>
