@@ -1,12 +1,12 @@
-import { Component } from "react";
+function ImageUploader(props) {
+    function uploadImage() {
+        //use FormData API to send file to the server
+        const file = document.querySelector("input[type=file]").files[0];
+        console.log(file);
 
-export default class Uploader extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            picture: false,
-            src: false,
-        };
+        const formData = new FormData();
+        formData.append("file", file);
+
         fetch("/profilepic", {
             method: "POST",
             body: formData,
@@ -14,25 +14,33 @@ export default class Uploader extends Component {
             .then((res) => {
                 return res.json();
             })
-            .then((image) => {
-                //console.log("image", image);
-                this.images.push(image);
+            .then((result) => {
+                console.log("/profile picture  results", result.image);
+                if (result.success) {
+                    props.handleSuccess(result.image);
+                } else {
+                    console.log("result: ", result);
+                }
             });
     }
-
-    render() {
-        return (
-            <div>
-                <h5>Picture Uploader</h5>
-
-                <input type="file" />
-                <br />
+    return (
+        <div className="modal">
+            <div className="modalContainer">
+                <h1>Upload your photo finally!!!</h1>
                 <div>
-                    <p>No Preview</p>
+                    <input
+                        type="file"
+                        accept="image/png, image/jpeg"
+                        name="profilePic"
+                        placeholder="choose image ..."
+                    ></input>
                 </div>
-                <hr />
-                <button>Upload</button>
+                <div>
+                    {<button onClick={props.clickHandler}>upload</button>}
+                    <button onClick={uploadImage}>upload</button>
+                </div>
             </div>
-        );
-    }
+        </div>
+    );
 }
+export default ImageUploader;

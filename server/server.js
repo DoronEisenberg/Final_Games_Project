@@ -5,9 +5,15 @@ const compression = require("compression");
 const path = require("path");
 const bcrypt = require("bcryptjs");
 const { PORT = 3001 } = process.env;
-
-const { addUser, getUserByEmail, findUserById } = require("./db");
-
+const { s3 } = require("./s3");
+const { uploader } = require("./multer");
+const {
+    addUser,
+    getUserByEmail,
+    findUserById,
+    addProfilePic,
+} = require("./db");
+const fs = require("fs");
 //-------------------------------------------- Middleware
 /*
 app.use((req, res, next) => {
@@ -147,8 +153,8 @@ app.get("/user/id.json", (req, res) => {
 });
 
 //////// upload the Picture ///////
-/*
-app.post("/profilePicUpload", uploader.single("file"), (req, res) => {
+
+app.post("/profilepic", uploader.single("file"), (req, res) => {
     console.log(req.file);
     const { filename, mimetype, size, path } = req.file;
 
@@ -166,19 +172,18 @@ app.post("/profilePicUpload", uploader.single("file"), (req, res) => {
     promise
         .then(() => {
             let pictureData = {
-                id: req.session.userID,
-                user_picture_url: `https://s3.amazonaws.com/spicedling/${req.file.filename}`,
+                id: req.session.userId,
+                url: `https://s3.amazonaws.com/spicedling/${req.file.filename}`,
             };
-            addProfilePic(pictureData).then((userData) => {
-                res.json(userData.rows[0]);
+            addProfilePic(pictureData.url, pictureData.id).then((userData) => {
+                console.log("userData", userData);
+                res.json(userData);
             });
         })
         .catch((err) => {
             console.log(err);
         });
 });
-
-*/
 
 //catching the home page
 app.get("*", function (req, res) {

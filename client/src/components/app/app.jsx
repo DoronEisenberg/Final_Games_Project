@@ -1,5 +1,6 @@
 import { Component } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import provider from "react-redux";
 import React, { useState } from "react";
 import Logo from "../logo/logo";
 import Logout from "../logout/logout";
@@ -13,6 +14,11 @@ export default class App extends Component {
             uploaderOpen: false,
             currentUser: null,
         };
+        this.openSesmee = this.openSesmee.bind(this);
+    }
+    //methods//
+    openSesmee() {
+        this.setState({ uploaderOpen: true });
     }
     componentDidMount() {
         fetch("/user")
@@ -30,6 +36,12 @@ export default class App extends Component {
         //passing state to child component
 
         return (
+            /* 
+we need the <provider inside the render  in the app.js
+(the first of the main routes) like 
+render() return { and then <Provider store={store}>  
+and at the end closing</Provider> 
+*/
             <div>
                 <Logo user={this.state.currentUser} />
                 <ProfilePic user={this.state.currentUser} />
@@ -43,7 +55,7 @@ export default class App extends Component {
                             path="/"
                             element={
                                 <Profile
-                                    uploaderOpen={this.uploaderOpen}
+                                    openSesmee={this.openSesmee}
                                     user={this.state.currentUser}
                                 />
                             }

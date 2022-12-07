@@ -80,10 +80,26 @@ function getUserByEmail(email) {
         .catch((error) => console.log(error));
 }
 
+function addProfilePic(url, id) {
+    //console.log("url, id", url, id);
+    return db
+        .query(
+            `UPDATE users 
+            SET profilepic_url=$1 WHERE id=$2
+    RETURNING *`,
+            [url, id]
+        )
+        .then((result) => {
+            //console.log("result", result);
+            return result.rows[0];
+        });
+}
+
 module.exports = {
     authenticateUser,
     addUser,
     getUserDetails,
     getUserByEmail,
     findUserById,
+    addProfilePic,
 };
