@@ -53,7 +53,7 @@ export default class Login extends Component {
                     // User is logged-in
                     // -> reload page to show logged-in
                     location.reload();
-                    //console.log("ok!");
+                    console.log("ok!");
                 } else {
                     console.log("no!");
                     // Update 'error' property in state

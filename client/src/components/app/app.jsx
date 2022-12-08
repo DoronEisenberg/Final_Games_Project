@@ -6,7 +6,8 @@ import Logo from "../logo/logo";
 import Logout from "../logout/logout";
 import Uploader from "../uploader";
 import ProfilePic from "../ProfilePic/profilepic";
-import Profile from "../Profile/profile";
+import Profile from "../Profile/profile.jsx";
+
 export default class App extends Component {
     constructor(props) {
         super(props);
@@ -20,6 +21,37 @@ export default class App extends Component {
     openSesmee() {
         this.setState({ uploaderOpen: true });
     }
+
+    closeSesamee() {
+        this.setState({ isUploaderVisible: false });
+    }
+
+    bioUpdate(bio) {
+        //console.log("bio uppdate", bio);
+        this.setState({
+            currentUser: {
+                ...this.state.currentUser,
+                bio: bio,
+            },
+        });
+    }
+
+    profilePicUploaded(url) {
+        //console.log("profilePic", url);
+        this.setState(
+            {
+                currentUser: {
+                    ...this.state.currentUser,
+                    profilepic_url: url,
+                },
+            },
+            () => {
+                console.log(this.state);
+                this.closeUploader();
+            }
+        );
+    }
+    /////////////////////
     componentDidMount() {
         fetch("/user")
             .then((res) => res.json())
@@ -57,6 +89,7 @@ and at the end closing</Provider>
                                 <Profile
                                     openSesmee={this.openSesmee}
                                     user={this.state.currentUser}
+                                    bioUpdate={(bio) => this.bioUpdate(bio)}
                                 />
                             }
                         ></Route>

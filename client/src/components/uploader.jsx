@@ -36,8 +36,12 @@ function ImageUploader(props) {
                     ></input>
                 </div>
                 <div>
-                    {<button onClick={props.clickHandler}>upload</button>}
                     <button onClick={uploadImage}>upload</button>
+                    {
+                        <button onClick={props.clickHandler}>
+                            Not Working (From uploader
+                        </button>
+                    }
                 </div>
             </div>
         </div>

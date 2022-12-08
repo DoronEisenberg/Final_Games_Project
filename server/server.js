@@ -184,6 +184,17 @@ app.post("/profilepic", uploader.single("file"), (req, res) => {
             console.log(err);
         });
 });
+//////////////    BIO   //////////////////////////////////
+app.post("/BioEditor", (req, res) => {
+    console.log("req.body", req.body);
+    updateBio({ bio: req.body.inputBio, id: req.session.userId })
+        .then((user) => {
+            res.json({ success: true });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
 
 //catching the home page
 app.get("*", function (req, res) {
