@@ -12,10 +12,11 @@ const {
     getUserByEmail,
     findUserById,
     addProfilePic,
+    addBio,
 } = require("./db");
 const fs = require("fs");
 //-------------------------------------------- Middleware
-/*
+
 app.use((req, res, next) => {
     console.log("---------------------");
     console.log("req.url:", req.url);
@@ -23,7 +24,7 @@ app.use((req, res, next) => {
     console.log("req.session:", req.session);
     console.log("---------------------");
     next();
-});*/
+});
 
 //------------------------------------------------ Cookie Session
 const cookieSession = require("cookie-session");
@@ -41,6 +42,14 @@ app.use(express.static(path.join(__dirname, "..", "client", "public")));
 app.use(express.urlencoded({ extended: false }));
 // json parser
 app.use(express.json());
+
+//check if user is logged in from the session
+app.get("/user/id.json", (req, res) => {
+    //console.log(req.session.userId);
+    res.json({
+        userId: req.session.userId,
+    });
+});
 
 //--------------------------------------------- Registration
 
@@ -144,14 +153,6 @@ app.get("/user", (req, res) => {
     });
 });
 
-//check if user is logged in from the session
-app.get("/user/id.json", (req, res) => {
-    //console.log(req.session.userId);
-    res.json({
-        userId: req.session.userId,
-    });
-});
-
 //////// upload the Picture ///////
 
 app.post("/profilepic", uploader.single("file"), (req, res) => {
@@ -186,10 +187,10 @@ app.post("/profilepic", uploader.single("file"), (req, res) => {
 });
 //////////////    BIO   //////////////////////////////////
 app.post("/BioEditor", (req, res) => {
-    console.log("req.body", req.body);
-    updateBio({ bio: req.body.inputBio, id: req.session.userId })
+    console.log("req.body", req.body, req.session.userId);
+    addBio({ bio: req.body.inputBio, id: req.session.userId })
         .then((user) => {
-            res.json({ success: true });
+            res.json({ success: true, message: user.bio });
         })
         .catch((err) => {
             console.log(err);

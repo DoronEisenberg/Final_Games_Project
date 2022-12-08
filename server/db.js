@@ -90,7 +90,22 @@ function addProfilePic(url, id) {
             [url, id]
         )
         .then((result) => {
-            //console.log("result", result);
+            console.log("result", result.rows[0]);
+            return result.rows[0];
+        });
+}
+
+function addBio({ bio, id }) {
+    //console.log("bio, id", bio, id);
+    return db
+        .query(
+            `UPDATE users 
+            SET bio=$1 WHERE id=$2
+    RETURNING *`,
+            [bio, id]
+        )
+        .then((result) => {
+            console.log("result.rows[0]", result.rows[0]);
             return result.rows[0];
         });
 }
@@ -102,4 +117,5 @@ module.exports = {
     getUserByEmail,
     findUserById,
     addProfilePic,
+    addBio,
 };

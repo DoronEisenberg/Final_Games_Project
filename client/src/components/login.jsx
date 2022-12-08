@@ -52,7 +52,7 @@ export default class Login extends Component {
                 if (response.success) {
                     // User is logged-in
                     // -> reload page to show logged-in
-                    location.reload();
+                    location.replace("/");
                     console.log("ok!");
                 } else {
                     console.log("no!");

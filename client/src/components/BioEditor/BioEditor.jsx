@@ -1,5 +1,4 @@
 import { Component } from "react";
-// import SubmitButton from "../SubmitButton";
 export default class BioEditor extends Component {
     constructor(props) {
         super(props);
@@ -9,19 +8,20 @@ export default class BioEditor extends Component {
         this.editBio = this.editBio.bind(this);
 
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
     ////// METHODS /////
     editBio() {
         this.setState({ editing: true });
     }
     handleInputChange(e) {
-        console.log(e);
+        //console.log(e);
         const text = e.currentTarget.value;
         this.setState({
             [e.currentTarget.name]: text,
         });
     }
-    /*
+
     handleToggle() {
         this.setState({
             editBio: true,
@@ -29,17 +29,17 @@ export default class BioEditor extends Component {
     }
 
     handleSubmit() {
-        fetch("/updatebio", {
+        fetch("/BioEditor", {
             method: "POST",
-            body: JSON.stringify(this.state),
+            body: JSON.stringify({ inputBio: this.state.inputBio }),
             headers: { "Content-Type": "application/json" },
         })
             .then((res) => res.json())
-            .then((userData) => {
-                console.log("userData in BIO: ", userData);
+            .then((result) => {
+                console.log("userData in BIO: ", result.message);
                 this.setState({
                     editBio: false,
-                    userData: userData,
+                    userData: result,
                 });
             })
             .catch((error) => {
@@ -49,7 +49,7 @@ export default class BioEditor extends Component {
 
     componentDidMount() {
         console.log("here inside biohook");
-        fetch("/userprofile")
+        fetch("/user")
             .then((res) => res.json())
             .then((userData) => {
                 console.log("BIO USER DATA FETCH: ", userData);
@@ -60,7 +60,7 @@ export default class BioEditor extends Component {
             });
     }
 
-    //
+    /*
     componentDidUpdate() {
         if (this.state.biotext !== this.props.userData.biotext) {
             this.setState({
@@ -73,7 +73,7 @@ export default class BioEditor extends Component {
         const bio = this.props.user?.bio || "";
         return (
             <div>
-                <p>bio</p>
+                <p>Bio Component</p>
                 <div>
                     {!this.state.editing && (
                         <div>
@@ -84,23 +84,12 @@ export default class BioEditor extends Component {
                     {this.state.editing && (
                         <div>
                             <input
-                                type="text"
+                                type="textarea"
                                 name="inputBio"
                                 onChange={this.handleInputChange}
                                 placeholder="add a bio"
                             ></input>
-                            <button
-                                route="/BioEditor"
-                                payload={{ inputBio: this.state.inputBio }}
-                                onClick={() => {
-                                    this.setState({ editing: false });
-                                    this.props.bioUpdate(this.state.inputBio);
-                                }}
-                                onError={() => {}}
-                                text="save"
-                            >
-                                SUBMIT
-                            </button>
+                            <button onClick={this.handleSubmit}>SUBMIT</button>
                         </div>
                     )}
                 </div>
