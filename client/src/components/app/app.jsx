@@ -1,13 +1,16 @@
 import { Component } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import provider from "react-redux";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Logo from "../logo/logo";
 import Logout from "../logout/logout";
 import Uploader from "../uploader";
 import ProfilePic from "../ProfilePic/profilepic";
 import Profile from "../Profile/profile.jsx";
-
+import FindPeople from "../FindPeople/FindPeople.jsx";
+import PersonalProfile from "../PersonalProfile/PersonalProfile.jsx";
+//import { Link } from "react-router-dom";
 export default class App extends Component {
     constructor(props) {
         super(props);
@@ -16,7 +19,9 @@ export default class App extends Component {
             currentUser: null,
         };
         this.openSesmee = this.openSesmee.bind(this);
+        this.handleclick = this.handleclick.bind(this);
     }
+    // nevigate = useNavigate();
     //methods//
     openSesmee() {
         this.setState({ uploaderOpen: true });
@@ -35,6 +40,10 @@ export default class App extends Component {
             },
         });
     }
+    /// to check another way to show the results of find people
+    handleclick() {
+        location.replace("/findpeople");
+    }
 
     profilePicUploaded(url) {
         //console.log("profilePic", url);
@@ -51,6 +60,10 @@ export default class App extends Component {
             }
         );
     }
+
+    // let handleclick = (e) => {
+
+    // }
     /////////////////////
     componentDidMount() {
         fetch("/user")
@@ -93,12 +106,22 @@ and at the end closing</Provider>
                                 />
                             }
                         ></Route>
+                        <Route path="/findpeople" element={<FindPeople />} />
+                        <Route
+                            path="/otherPersonalprofile/:id"
+                            element={
+                                <PersonalProfile
+                                    userData={this.state.userData}
+                                />
+                            }
+                        />
                     </Routes>
                 </BrowserRouter>
 
                 {this.state.uploaderOpen && (
                     <Uploader user={this.state.currentUser} />
                 )}
+                <button onClick={this.handleclick}> Find People</button>
             </div>
         );
     }

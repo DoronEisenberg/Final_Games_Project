@@ -110,6 +110,32 @@ function addBio({ bio, id }) {
         });
 }
 
+function getThreeNewestUsers() {
+    return db
+        .query(
+            `SELECT id, firstname, lastname, profilepic_url FROM users ORDER BY created_at DESC LIMIT 3`
+        )
+        .then((users) => users.rows);
+}
+
+function getOthersBySearchQuery(searchQuery) {
+    return db
+        .query(
+            `SELECT id, firstname, lastname, profilepic_url FROM users WHERE firstname ILIKE $1 
+        OR lastname ILIKE $1 
+        ORDER BY created_at DESC`,
+            ["%" + searchQuery + "%"]
+        )
+        .then((users) => users.rows);
+}
+
+//function to get other profile user data by ID
+function getOtherProfileByIDParam(id) {
+    return db
+        .query(`SELECT * FROM users WHERE id=$1`, [id])
+        .then((otherUser) => otherUser.rows);
+}
+
 module.exports = {
     authenticateUser,
     addUser,
@@ -118,4 +144,7 @@ module.exports = {
     findUserById,
     addProfilePic,
     addBio,
+    getThreeNewestUsers,
+    getOthersBySearchQuery,
+    getOtherProfileByIDParam,
 };

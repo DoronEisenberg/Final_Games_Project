@@ -13,8 +13,17 @@ const {
     findUserById,
     addProfilePic,
     addBio,
+    getThreeNewestUsers,
+    getOthersBySearchQuery,
+    getPersonalProfileByIDParam,
 } = require("./db");
 const fs = require("fs");
+
+//////// soket.io config ///
+/*const server = require("socket.io")(SERVER, {
+    allowrequest: (req, callback) => callback(null, req.headers.referer, req.headers.
+});*/
+///////////////////
 //-------------------------------------------- Middleware
 
 app.use((req, res, next) => {
@@ -197,11 +206,89 @@ app.post("/BioEditor", (req, res) => {
         });
 });
 
+//FIND PEOPLE ------------------------------------------------------>
+
+app.get("/userlist", (req, res) => {
+    getThreeNewestUsers().then((usersData) => {
+        res.json(usersData);
+    });
+});
+
+app.get("/userlist/:query", (req, res) => {
+    console.log("USERLIST QUERY: ", req.params.query);
+    getOthersBySearchQuery(req.params.query).then((user) => {
+        console.log("user", user);
+        res.json(user);
+    });
+});
+
+//PERSONAL PROFILE ---------------------------------------------------->
+
+app.get("/PersonalProfile/:id", (req, res) => {
+    console.log("OTHER ID: ", req.params.id);
+    console.log("SESSION ID!!!: ", req.session.userID);
+    if (req.session.userID === req.params.id) {
+        res.redirect("/");
+    }
+    getPersonalProfileByIDParam(req.params.id).then((users) => {
+        console.log("SOME DATA WATCHING: ", users);
+        res.json(users);
+    });
+});
+
+//FRIEND BUTTON ------------------------------------------------>
+
+app.get("/friend/:otheruser", (req, res) => {
+    // console.log("Inside Friend Request");
+    let friendrequestStatus = {
+        friendStatus: "",
+    };
+    const { userID } = req.session;
+    const { otheruser } = req.params;
+    console.log(
+        "userData at  getFriendRequestByIDs server before",
+        req.session.userID,
+        req.params.otheruser
+    );
+    getFriendRequestByIDs(userID, otheruser)
+        .then((friendRequest) => {
+            // console.log("MY FRIEND REQUEST: ", friendRequest);
+            if (!friendRequest) {
+                friendrequestStatus.friendStatus = "nonexisting";
+            } else {
+                if (friendRequest.sender_id === req.session.userID) {
+                    friendrequestStatus.friendStatus = "pending";
+                } else {
+                    friendrequestStatus.friendStatus = "received";
+                }
+                if (friendRequest.accepted) {
+                    friendrequestStatus.friendStatus = "friends";
+                }
+            }
+            console.log(
+                "result of friendship in DB: ",
+                friendrequestStatus.friendStatus
+            );
+            res.json(friendrequestStatus.friendStatus);
+        })
+        .catch((error) => console.log(error));
+});
+
 //catching the home page
 app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "..", "client", "index.html"));
 });
 
+/*io.on("connection", function(socket) {
+    const userId = socket.request.session.userId;
+    console.log("socket id ${socket.id} is now connected to user ${userId}");
+
+
+    socket.on(disconnect",() => {
+        console.log("connection out! user
+    })
+});*/
 app.listen(PORT, function () {
     console.log(`Express server listening on port ${PORT}`);
 });
+/*to use server.listen(process.env.PORT) instead app.listen for socket.io */

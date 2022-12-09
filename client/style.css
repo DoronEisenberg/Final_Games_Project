@@ -37,13 +37,20 @@ main {
 }
 
 img.logo {
-    width: 200px;
+    display: flex;
+    align-items: flex-start;
+    width: 100px;
     height: auto;
 }
 
 button {
     display: flex;
     text-decoration-style: none;
+}
+
+.newUser {
+    width: 150px;
+    height: auto;
 }
 
 footer {

@@ -5,6 +5,7 @@ export default function Welcome() {
     return (
         <div id="welcome">
             <h1>Welcome!</h1>
+            <p>Here is the Logged Component</p>
             <img className="logo" src="/logo.png" />
             <div>
                 <BrowserRouter>

@@ -1,5 +1,3 @@
-//import { Component } from "react";
-//import uploader from "./uploader";
 import ProfilePic from "../ProfilePic/profilepic";
 import BioEditor from "../BioEditor/BioEditor";
 export default function Profile(props) {

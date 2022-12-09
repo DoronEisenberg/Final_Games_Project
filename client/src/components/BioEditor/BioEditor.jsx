@@ -60,15 +60,6 @@ export default class BioEditor extends Component {
             });
     }
 
-    /*
-    componentDidUpdate() {
-        if (this.state.biotext !== this.props.userData.biotext) {
-            this.setState({
-                biotext: this.props.userData.biotext,
-            });
-        }
-    }
-    */
     render() {
         const bio = this.props.user?.bio || "";
         return (
@@ -78,7 +69,7 @@ export default class BioEditor extends Component {
                     {!this.state.editing && (
                         <div>
                             <div className="biotext">{bio}</div>
-                            <button onClick={this.editBio}>edit bio</button>
+                            <button onClick={this.editBio}>Edit Bio</button>
                         </div>
                     )}
                     {this.state.editing && (
@@ -89,7 +80,9 @@ export default class BioEditor extends Component {
                                 onChange={this.handleInputChange}
                                 placeholder="add a bio"
                             ></input>
-                            <button onClick={this.handleSubmit}>SUBMIT</button>
+                            <button onClick={this.handleSubmit}>
+                                Confirm Your Bio
+                            </button>
                         </div>
                     )}
                 </div>
@@ -97,4 +90,3 @@ export default class BioEditor extends Component {
         );
     }
 }
-//console.log("this.editBio", this.editBio);

@@ -30,7 +30,7 @@ function ImageUploader(props) {
                 <div>
                     <input
                         type="file"
-                        accept="image/png, image/jpeg"
+                        accept="image/png, image/jpeg, image/gif"
                         name="profilePic"
                         placeholder="choose image ..."
                     ></input>
@@ -39,7 +39,7 @@ function ImageUploader(props) {
                     <button onClick={uploadImage}>upload</button>
                     {
                         <button onClick={props.clickHandler}>
-                            Not Working (From uploader
+                            Back (From uploader
                         </button>
                     }
                 </div>
