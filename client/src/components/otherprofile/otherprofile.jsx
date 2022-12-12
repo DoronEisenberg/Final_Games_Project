@@ -1,8 +1,12 @@
+import React from "react";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router";
+import Friendbutton from "../friendbutton";
 
-export default function PersonalProfile(props) {
+export default function OtherProfile(props) {
     const { id } = useParams();
+    console.log(id);
+    console.log("props user", props);
     const [userData, setUserData] = useState({});
 
     const navigate = useNavigate();
@@ -12,29 +16,29 @@ export default function PersonalProfile(props) {
     };
 
     useEffect(() => {
-        fetch(`/PersonalProfile/${id}`)
+        fetch(`/users/${id}`)
             .then((res) => res.json())
             .then((otherUser) => {
-                setUserData(...otherUser);
-                // console.log("USER DATA OTHER: ", userData);
+                setUserData(otherUser);
+                console.log("USER DATA OTHER: ", otherUser);
             })
             .catch((error) => console.log(error));
     }, []);
 
-    if (props.userData.id === parseInt(id)) {
-        navigate("/");
-    }
+    // if (props.userData?.id === parseInt(id)) {
+    //     navigate("/");
+    // }
     return (
         <section className="others-section">
-            <h1>other profile</h1>
+            <h1>other personal profile</h1>
             <img
-                src={userData.pictureurl || "..ProfilePhotos/Tom.gif"}
+                src={userData.profilepic_url || "..ProfilePhotos/Tom.gif"}
                 alt="{userData.firstname + userData.lastname}"
                 className="otheruserpic"
             />
             Bio of {userData.firstname} {userData.lastname}:
             <p>{userData.biotext}</p>
-            <Friendbutton id={props.userData.id} />
+            <Friendbutton />
             <button onClick={goHome}>HOME</button>
         </section>
     );

@@ -19,7 +19,7 @@ export default function FindPeople() {
 
     //function to navigate to profile
     function unknownProfile(e, key) {
-        navigate(`/otherpersonalprofile/${key}`);
+        navigate(`/otherprofile/${key}`);
     }
 
     return (
@@ -29,7 +29,7 @@ export default function FindPeople() {
                 type="text"
                 name="searchUser"
                 className="searchField"
-                placeholder="You can search here"
+                placeholder="Search here"
                 onChange={(e) => setSearchQuery(e.target.value)}
             />
             {userList.map((user) => (
@@ -40,7 +40,7 @@ export default function FindPeople() {
                 >
                     <img
                         className="newUser"
-                        src={user.pictureurl || "../ProfilePhotos/Tom.gif"}
+                        src={user.profilepic_url || "../ProfilePhotos/Tom.gif"}
                         alt="unknown picture"
                     />
                     {user.firstname} {user.lastname}

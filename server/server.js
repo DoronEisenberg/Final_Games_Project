@@ -7,6 +7,7 @@ const bcrypt = require("bcryptjs");
 const { PORT = 3001 } = process.env;
 const { s3 } = require("./s3");
 const { uploader } = require("./multer");
+const fs = require("fs");
 const {
     addUser,
     getUserByEmail,
@@ -15,9 +16,9 @@ const {
     addBio,
     getThreeNewestUsers,
     getOthersBySearchQuery,
-    getPersonalProfileByIDParam,
+    getOtherProfileByIDParam,
+    getFriendFriendship,
 } = require("./db");
-const fs = require("fs");
 
 //////// soket.io config ///
 /*const server = require("socket.io")(SERVER, {
@@ -26,14 +27,14 @@ const fs = require("fs");
 ///////////////////
 //-------------------------------------------- Middleware
 
-app.use((req, res, next) => {
-    console.log("---------------------");
-    console.log("req.url:", req.url);
-    console.log("req.method:", req.method);
-    console.log("req.session:", req.session);
-    console.log("---------------------");
-    next();
-});
+// app.use((req, res, next) => {
+//     console.log("---------------------");
+//     console.log("req.url:", req.url);
+//     console.log("req.method:", req.method);
+//     console.log("req.session:", req.session);
+//     console.log("---------------------");
+//     next();
+// });
 
 //------------------------------------------------ Cookie Session
 const cookieSession = require("cookie-session");
@@ -222,15 +223,24 @@ app.get("/userlist/:query", (req, res) => {
     });
 });
 
-//PERSONAL PROFILE ---------------------------------------------------->
+//PERSONAL OtherProfile/PesonalProfile/:id", (req, res) => {
+//     const searchQuery = req.params.id;
+//     console.log("params searchQuery", req.params);
 
-app.get("/PersonalProfile/:id", (req, res) => {
+//     getOtherProfileByIDParam(searchQuery).then((user) => {
+//         console.log("search users", user);
+//         res.json({ user, success: true });
+//     });
+// });
+
+////
+app.get("/users/:id", (req, res) => {
     console.log("OTHER ID: ", req.params.id);
     console.log("SESSION ID!!!: ", req.session.userID);
     if (req.session.userID === req.params.id) {
         res.redirect("/");
     }
-    getPersonalProfileByIDParam(req.params.id).then((users) => {
+    getOtherProfileByIDParam(req.params.id).then((users) => {
         console.log("SOME DATA WATCHING: ", users);
         res.json(users);
     });
@@ -250,7 +260,7 @@ app.get("/friend/:otheruser", (req, res) => {
         req.session.userID,
         req.params.otheruser
     );
-    getFriendRequestByIDs(userID, otheruser)
+    getFriendFriendship(userID, otheruser)
         .then((friendRequest) => {
             // console.log("MY FRIEND REQUEST: ", friendRequest);
             if (!friendRequest) {
@@ -266,7 +276,7 @@ app.get("/friend/:otheruser", (req, res) => {
                 }
             }
             console.log(
-                "result of friendship in DB: ",
+                "result of getfriendship in DB: ",
                 friendrequestStatus.friendStatus
             );
             res.json(friendrequestStatus.friendStatus);

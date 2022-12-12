@@ -9,7 +9,7 @@ import Uploader from "../uploader";
 import ProfilePic from "../ProfilePic/profilepic";
 import Profile from "../Profile/profile.jsx";
 import FindPeople from "../FindPeople/FindPeople.jsx";
-import PersonalProfile from "../PersonalProfile/PersonalProfile.jsx";
+import OtherProfile from "../otherprofile/otherprofile";
 //import { Link } from "react-router-dom";
 export default class App extends Component {
     constructor(props) {
@@ -108,12 +108,18 @@ and at the end closing</Provider>
                         ></Route>
                         <Route path="/findpeople" element={<FindPeople />} />
                         <Route
-                            path="/otherPersonalprofile/:id"
+                            path="/otherprofile/:id"
                             element={
-                                <PersonalProfile
-                                    userData={this.state.userData}
-                                />
+                                <OtherProfile user={this.state.currentUser} />
                             }
+                        />
+                        <Route
+                            path="/logout"
+                            element={<Logout userID={this.state.userID} />}
+                        />
+                        <Route
+                            path="../Profile/profile"
+                            element={<Profile />}
                         />
                     </Routes>
                 </BrowserRouter>

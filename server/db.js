@@ -129,11 +129,43 @@ function getOthersBySearchQuery(searchQuery) {
         .then((users) => users.rows);
 }
 
-//function to get other profile user data by ID
+//function to get other PERSONAL PROFILE data by ID
 function getOtherProfileByIDParam(id) {
     return db
         .query(`SELECT * FROM users WHERE id=$1`, [id])
-        .then((otherUser) => otherUser.rows);
+        .then((otherUser) => otherUser.rows[0]);
+}
+
+function getFriendFriendship(sender, recipient) {
+    const query = `
+        SELECT * FROM friendships
+        WHERE (sender_id = $1 AND recipient_id = $2)
+        OR (sender_id = $2 AND recipient_id = $1)`;
+    return db.query(query, [sender, recipient]);
+}
+
+function sendFriendship(recipient, sender) {
+    return db.query(
+        `INSERT INTO friendships(recipient_id, sender_id)
+    VALUES ($1, $2)`,
+        [recipient, sender]
+    );
+}
+
+function acceptsFriendship(recipient, sender) {
+    return db.query(
+        `UPDATE friendships SET address =true WHERE (sender_id = $1 AND recipient_id = $2) 
+        OR (sender_id = $2 AND recipient_id = $1) RETURNING *`,
+        [recipient, sender]
+    );
+}
+
+function unfriendsFriendship(recipient, sender) {
+    return db.query(
+        `DELETE FROM friendships WHERE address =true WHERE (sender_id = $1 AND recipient_id = $2) 
+        OR (sender_id = $2 AND recipient_id = $1) RETURNING *`,
+        [recipient, sender]
+    );
 }
 
 module.exports = {
@@ -147,4 +179,8 @@ module.exports = {
     getThreeNewestUsers,
     getOthersBySearchQuery,
     getOtherProfileByIDParam,
+    getFriendFriendship,
+    sendFriendship,
+    acceptsFriendship,
+    unfriendsFriendship,
 };

@@ -12,14 +12,14 @@ export default function friendbutton(props) {
         fetch(`/friend/${id}`)
             .then((res) => res.json())
             .then((request) => {
-                console.log("request fetch in friend btn: ", request);
+                console.log("request fetch in friend button: ", request);
 
                 setRequestStatus(request);
             })
-            .catch((error) => console.log("PROBLEM IN FRIENDSHIP ", error));
+            .catch((error) => console.log("PROBLEM IN GETFRIENDSHIP ", error));
     }, []);
 
     console.log("REQUEST STATUS HERE: ", requestStatus === "nonexisting");
 
-    return ButtonTextDecider(id, requestStatus);
+    return <button></button>;
 }

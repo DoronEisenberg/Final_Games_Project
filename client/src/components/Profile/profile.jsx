@@ -8,6 +8,7 @@ export default function Profile(props) {
             {uploaderOpen && <uploader tools={props.tools} />}
             <ProfilePic openSesmee={props.openSesmee} user={props.user} />
             <BioEditor user={props.user} bioUpdate={props.bioUpdate} />
+            {/* <PersonalPeople user={props.user} bioUpdate={props.bioUpdate} /> */}
         </div>
     );
 }
