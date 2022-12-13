@@ -19,6 +19,8 @@ const {
     getOtherProfileByIDParam,
     getFriendship,
     sendRequest,
+    acceptsFriendship,
+    unfriendsFriendship,
 } = require("./db");
 
 //////// soket.io config ///
@@ -237,7 +239,7 @@ app.get("/users/:id", (req, res) => {
 
 //FRIEND BUTTON ------------------------------------------------>
 
-app.get("/sendRequest/:otheruser", (req, res) => {
+app.get("/buttontext/:otheruser", (req, res) => {
     let friendrequestStatus = {
         friendStatus: "",
     };
@@ -257,16 +259,16 @@ app.get("/sendRequest/:otheruser", (req, res) => {
             console.log("status", status);
             if (status.length === 0) {
                 console.log("friendsend");
-                friendrequestStatus.buttonText = "Send Friend Request";
+                friendrequestStatus.buttonText = "Add Friend";
                 res.json({ buttonText: friendrequestStatus.buttonText });
             } else {
                 if (status[0].accepted) {
                     friendrequestStatus.buttonText = "Unfriend";
                 } else {
                     if (status[0].sender_id === req.session.userId) {
-                        friendrequestStatus.buttonText = "And now waiting...";
+                        friendrequestStatus.buttonText = "Cancel";
                     } else {
-                        friendrequestStatus.buttonText = "received";
+                        friendrequestStatus.buttonText = "Accept";
                     }
                 }
                 console.log(
@@ -279,15 +281,20 @@ app.get("/sendRequest/:otheruser", (req, res) => {
         .catch((error) => console.log(error));
 });
 
-app.post("/sendRequest/:id", (req, res) => {
+app.get("/sendRequest/:id", (req, res) => {
     console.log("req.body", req.body, "req.session.userId", req.session.userId);
-
-    sendRequest({
-        sending: req.body.inputFriendRequest,
-        id: req.session.userId,
-    })
-        .then((user) => {
-            res.json({ success: true, message: user.bio });
+    const userId = req.session.userId;
+    const otheruser = req.params.id;
+    console.log(
+        "req.params",
+        req.params,
+        "req.session.userId",
+        req.session.userId
+    );
+    sendRequest(otheruser, userId)
+        .then((response) => {
+            console.log("response", response);
+            res.json({ success: true });
         })
         .catch((err) => {
             console.log("ERROR IN SENDING REQUEST: ", err);
@@ -296,18 +303,34 @@ app.post("/sendRequest/:id", (req, res) => {
 
 app.post("/acceptsFriendship/:id", (req, res) => {
     console.log("req.body", req.body, req.session.userId);
-    acceptRequest({
-        accepting: req.body.inputFriendRequest,
-        id: req.session.userId,
-    })
+    const userId = req.session.userId;
+    const otheruser = req.params.id;
+    console.log("otheruser", otheruser);
+    console.log("userId", userId);
+    acceptsFriendship(otheruser, userId)
         .then((user) => {
-            res.json({ success: true, message: user.bio });
+            console.log("friendship accepted");
+            // res.json({ success: true, message: user.bio });
         })
         .catch((err) => {
             console.log("ERROR IN ACCEPTING FRIEND: ", err);
         });
 });
 
+app.post("/unfriendsFriendship/:id", (req, res) => {
+    console.log("req.body", req.body, req.session.userId);
+    const userId = req.session.userId;
+    const otheruser = req.params.id;
+    console.log("otheruser", otheruser);
+    console.log("userId", userId);
+    unfriendsFriendship(otheruser, userId)
+        .then((user) => {
+            console.log("unfriendsFriendship");
+        })
+        .catch((err) => {
+            console.log("ERROR IN unfriendsFriendship: ", err);
+        });
+});
 //catching the home page
 app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "..", "client", "index.html"));

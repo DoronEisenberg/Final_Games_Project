@@ -159,8 +159,9 @@ function sendRequest(recipient, sender) {
 }
 
 function acceptsFriendship(recipient, sender) {
+    // console.log(recipient, sender);
     return db.query(
-        `UPDATE friendships SET accepted =true WHERE (sender_id = $1 AND recipient_id = $2) 
+        `UPDATE friendships SET accepted =true WHERE (sender_id = $1 AND recipient_id = $2)
         OR (sender_id = $2 AND recipient_id = $1)`,
         [recipient, sender]
     );

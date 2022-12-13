@@ -32,7 +32,7 @@ export default function OtherProfile(props) {
         <section className="others-section">
             <h1>other personal profile</h1>
             <img
-                src={userData.profilepic_url || "..ProfilePhotos/Tom.gif"}
+                src={userData.profilepic_url || "/ProfilePhotos/Tom.gif"}
                 alt="{userData.firstname + userData.lastname}"
                 className="otheruserpic"
             />
