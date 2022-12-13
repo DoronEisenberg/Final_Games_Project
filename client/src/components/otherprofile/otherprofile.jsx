@@ -38,8 +38,8 @@ export default function OtherProfile(props) {
             />
             Bio of {userData.firstname} {userData.lastname}:
             <p>{userData.biotext}</p>
-            <Friendbutton />
-            <button onClick={goHome}>HOME</button>
+            <Friendbutton id={id} />
+            <button onClick={goHome}>GO BACK HOME</button>
         </section>
     );
 }

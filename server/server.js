@@ -17,24 +17,24 @@ const {
     getThreeNewestUsers,
     getOthersBySearchQuery,
     getOtherProfileByIDParam,
-    getFriendFriendship,
+    getFriendship,
+    sendRequest,
 } = require("./db");
 
 //////// soket.io config ///
 /*const server = require("socket.io")(SERVER, {
     allowrequest: (req, callback) => callback(null, req.headers.referer, req.headers.
 });*/
-///////////////////
-//-------------------------------------------- Middleware
+///////////////////-------------------------------------------- Middleware
 
-// app.use((req, res, next) => {
-//     console.log("---------------------");
-//     console.log("req.url:", req.url);
-//     console.log("req.method:", req.method);
-//     console.log("req.session:", req.session);
-//     console.log("---------------------");
-//     next();
-// });
+app.use((req, res, next) => {
+    console.log("---------------------");
+    console.log("req.url:", req.url);
+    console.log("req.method:", req.method);
+    console.log("req.session:", req.session);
+    console.log("---------------------");
+    next();
+});
 
 //------------------------------------------------ Cookie Session
 const cookieSession = require("cookie-session");
@@ -223,65 +223,89 @@ app.get("/userlist/:query", (req, res) => {
     });
 });
 
-//PERSONAL OtherProfile/PesonalProfile/:id", (req, res) => {
-//     const searchQuery = req.params.id;
-//     console.log("params searchQuery", req.params);
-
-//     getOtherProfileByIDParam(searchQuery).then((user) => {
-//         console.log("search users", user);
-//         res.json({ user, success: true });
-//     });
-// });
-
-////
 app.get("/users/:id", (req, res) => {
     console.log("OTHER ID: ", req.params.id);
-    console.log("SESSION ID!!!: ", req.session.userID);
-    if (req.session.userID === req.params.id) {
+    console.log("SESSION ID!!!: ", req.session.userId);
+    if (req.session.userId === req.params.id) {
         res.redirect("/");
     }
     getOtherProfileByIDParam(req.params.id).then((users) => {
-        console.log("SOME DATA WATCHING: ", users);
+        // console.log("DATA WATCHING: ", users);
         res.json(users);
     });
 });
 
 //FRIEND BUTTON ------------------------------------------------>
 
-app.get("/friend/:otheruser", (req, res) => {
-    // console.log("Inside Friend Request");
+app.get("/sendRequest/:otheruser", (req, res) => {
     let friendrequestStatus = {
         friendStatus: "",
     };
-    const { userID } = req.session;
+    console.log("friendrequestStatus:", friendrequestStatus);
+    const { userId } = req.session;
     const { otheruser } = req.params;
     console.log(
-        "userData at  getFriendRequestByIDs server before",
-        req.session.userID,
-        req.params.otheruser
+        // "userData at getFriendRequestByIDparam before",
+
+        "req.params.otheruser",
+        req.params.otheruser,
+        "req.session.userId",
+        req.session.userId
     );
-    getFriendFriendship(userID, otheruser)
-        .then((friendRequest) => {
-            // console.log("MY FRIEND REQUEST: ", friendRequest);
-            if (!friendRequest) {
-                friendrequestStatus.friendStatus = "nonexisting";
+    getFriendship(userId, otheruser)
+        .then((status) => {
+            console.log("status", status);
+            if (status.length === 0) {
+                console.log("friendsend");
+                friendrequestStatus.buttonText = "Send Friend Request";
+                res.json({ buttonText: friendrequestStatus.buttonText });
             } else {
-                if (friendRequest.sender_id === req.session.userID) {
-                    friendrequestStatus.friendStatus = "pending";
+                if (status[0].accepted) {
+                    friendrequestStatus.buttonText = "Unfriend";
                 } else {
-                    friendrequestStatus.friendStatus = "received";
+                    if (status[0].sender_id === req.session.userId) {
+                        friendrequestStatus.buttonText = "And now waiting...";
+                    } else {
+                        friendrequestStatus.buttonText = "received";
+                    }
                 }
-                if (friendRequest.accepted) {
-                    friendrequestStatus.friendStatus = "friends";
-                }
+                console.log(
+                    "getFriendShip results in DATABASE: ",
+                    friendrequestStatus.buttonText
+                );
+                res.json({ buttonText: friendrequestStatus.buttonText });
             }
-            console.log(
-                "result of getfriendship in DB: ",
-                friendrequestStatus.friendStatus
-            );
-            res.json(friendrequestStatus.friendStatus);
         })
         .catch((error) => console.log(error));
+});
+
+app.post("/sendRequest/:id", (req, res) => {
+    console.log("req.body", req.body, "req.session.userId", req.session.userId);
+
+    sendRequest({
+        sending: req.body.inputFriendRequest,
+        id: req.session.userId,
+    })
+        .then((user) => {
+            res.json({ success: true, message: user.bio });
+        })
+        .catch((err) => {
+            console.log("ERROR IN SENDING REQUEST: ", err);
+        });
+});
+
+app.post("/acceptsFriendship/:id", (req, res) => {
+    console.log("req.body", req.body, req.session.userId);
+    acceptRequest({
+        accepting: req.body.inputFriendRequest,
+        id: req.session.userId,
+    })
+        .then((user) => {
+            res.json({ success: true, message: user.bio });
+        })
+        .catch((err) => {
+            console.log("ERROR IN ACCEPTING FRIEND: ", err);
+        });
 });
 
 //catching the home page

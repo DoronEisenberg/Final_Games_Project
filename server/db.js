@@ -129,41 +129,46 @@ function getOthersBySearchQuery(searchQuery) {
         .then((users) => users.rows);
 }
 
-//function to get other PERSONAL PROFILE data by ID
+//function to get OTHR PROFILE data by ID
 function getOtherProfileByIDParam(id) {
     return db
         .query(`SELECT * FROM users WHERE id=$1`, [id])
         .then((otherUser) => otherUser.rows[0]);
 }
-
-function getFriendFriendship(sender, recipient) {
-    const query = `
+/////////  FRIEND BUTTON  ///////
+function getFriendship(sender, recipient) {
+    return db
+        .query(
+            `
         SELECT * FROM friendships
         WHERE (sender_id = $1 AND recipient_id = $2)
-        OR (sender_id = $2 AND recipient_id = $1)`;
-    return db.query(query, [sender, recipient]);
+        OR (sender_id = $2 AND recipient_id = $1)`,
+            [sender, recipient]
+        )
+        .then((results) => {
+            return results.rows;
+        });
 }
 
-function sendFriendship(recipient, sender) {
+function sendRequest(recipient, sender) {
     return db.query(
         `INSERT INTO friendships(recipient_id, sender_id)
-    VALUES ($1, $2)`,
+    VALUES ($1, $2) RETURNING *`,
         [recipient, sender]
     );
 }
 
 function acceptsFriendship(recipient, sender) {
     return db.query(
-        `UPDATE friendships SET address =true WHERE (sender_id = $1 AND recipient_id = $2) 
-        OR (sender_id = $2 AND recipient_id = $1) RETURNING *`,
+        `UPDATE friendships SET accepted =true WHERE (sender_id = $1 AND recipient_id = $2) 
+        OR (sender_id = $2 AND recipient_id = $1)`,
         [recipient, sender]
     );
 }
 
 function unfriendsFriendship(recipient, sender) {
     return db.query(
-        `DELETE FROM friendships WHERE address =true WHERE (sender_id = $1 AND recipient_id = $2) 
-        OR (sender_id = $2 AND recipient_id = $1) RETURNING *`,
+        `DELETE FROM friendships WHERE (sender_id = $1 AND recipient_id = $2) OR (recipient_id = $1 AND sender_id = $2)`,
         [recipient, sender]
     );
 }
@@ -179,8 +184,8 @@ module.exports = {
     getThreeNewestUsers,
     getOthersBySearchQuery,
     getOtherProfileByIDParam,
-    getFriendFriendship,
-    sendFriendship,
+    getFriendship,
+    sendRequest,
     acceptsFriendship,
     unfriendsFriendship,
 };

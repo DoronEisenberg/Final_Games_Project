@@ -6,20 +6,22 @@ export default function friendbutton(props) {
     const { id } = useParams();
 
     const navigate = useNavigate();
-    const [requestStatus, setRequestStatus] = useState([]);
+    const [requestStatus, setRequestStatus] = useState({ buttonText: "" });
 
     useEffect(() => {
-        fetch(`/friend/${id}`)
+        fetch(`/sendRequest/${id}`)
             .then((res) => res.json())
-            .then((request) => {
-                console.log("request fetch in friend button: ", request);
+            .then((response) => {
+                console.log("request fetch in friend button: ", response);
 
-                setRequestStatus(request);
+                setRequestStatus(response);
             })
             .catch((error) => console.log("PROBLEM IN GETFRIENDSHIP ", error));
     }, []);
 
-    console.log("REQUEST STATUS HERE: ", requestStatus === "nonexisting");
-
-    return <button></button>;
+    console.log("REQUEST STATUS HERE: ", requestStatus);
+    function handleClick() {
+        console.log("click");
+    }
+    return <button onClick={handleClick}>{requestStatus.buttonText}</button>;
 }
