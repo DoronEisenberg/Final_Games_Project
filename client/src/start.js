@@ -2,6 +2,9 @@ import { createRoot } from "react-dom/client";
 //importing welcome component
 import Welcome from "./components/welcome";
 import App from "./components/app/app";
+import Game from "./components/Game/Game";
+import Logged from "./components/logged";
+import Profile from "./components/Profile/profile";
 //create root element main
 const root = createRoot(document.querySelector("main"));
 

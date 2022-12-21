@@ -4,7 +4,7 @@ const { USER, PASSWORD } = process.env;
 
 const user = USER;
 const password = PASSWORD;
-const database = "socialnetwork";
+const database = "online_games";
 
 console.log(`postgres:${user}:${password}@localhost:5432/${database}`);
 
@@ -17,6 +17,7 @@ const db = spicedPg(
 
 ////-----------------------------------------   Create User
 function addUser({ firstname, lastname, email, password }) {
+    console.log("HERE?");
     return db.query(
         `INSERT INTO users (firstname, lastname, email, password)
     VALUES ($1, $2, $3, $4)
@@ -95,14 +96,14 @@ function addProfilePic(url, id) {
         });
 }
 
-function addBio({ bio, id }) {
-    //console.log("bio, id", bio, id);
+function addScore({ score, id }) {
+    //console.log("score, id", score, id);
     return db
         .query(
             `UPDATE users 
-            SET bio=$1 WHERE id=$2
+            SET score=$1 WHERE id=$2
     RETURNING *`,
-            [bio, id]
+            [score, id]
         )
         .then((result) => {
             console.log("result.rows[0]", result.rows[0]);
@@ -181,7 +182,7 @@ module.exports = {
     getUserByEmail,
     findUserById,
     addProfilePic,
-    addBio,
+    addScore,
     getThreeNewestUsers,
     getOthersBySearchQuery,
     getOtherProfileByIDParam,

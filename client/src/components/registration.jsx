@@ -52,24 +52,8 @@ export default class Registration extends Component {
     render() {
         return (
             <div>
-                <h1>This is the registration component</h1>
-                <h5>
-                    The competences required by a teacher are affected by the
-                    <br></br>
-                    different ways in which the role is understood around the
-                    <br></br>
-                    world.
-                    <br></br>
-                    Broadly, there seem to be four models:
-                    <br></br>
-                    the teacher as manager of instruction;
-                    <br></br>
-                    the teacher as caring person;
-                    <br></br>
-                    the teacher as expert learner;
-                    <br></br>
-                    and the teacher as cultural and civic person.
-                </h5>
+                <h1>Online Games </h1>
+
                 <div className="error">{this.state.error}</div>
                 <div>
                     <input

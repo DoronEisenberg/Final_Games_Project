@@ -1,5 +1,5 @@
 import ProfilePic from "../ProfilePic/profilepic";
-import BioEditor from "../BioEditor/BioEditor";
+// import ScoreEditor from "../ScoreEditor/ScoreEditor";
 export default function Profile(props) {
     const { uploaderOpen } = props;
     return (
@@ -7,8 +7,8 @@ export default function Profile(props) {
             <p>Here is the profile component</p>
             {uploaderOpen && <uploader tools={props.tools} />}
             <ProfilePic openSesmee={props.openSesmee} user={props.user} />
-            <BioEditor user={props.user} bioUpdate={props.bioUpdate} />
-            {/* <PersonalPeople user={props.user} bioUpdate={props.bioUpdate} /> */}
+            {/* <ScoreEditor user={props.user} scoreUpdate={props.scoreUpdate} /> */}
+            {/* <PersonalPeople user={props.user} scoreUpdate={props.scoreUpdate} /> */}
         </div>
     );
 }

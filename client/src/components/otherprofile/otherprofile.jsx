@@ -36,8 +36,8 @@ export default function OtherProfile(props) {
                 alt="{userData.firstname + userData.lastname}"
                 className="otheruserpic"
             />
-            Bio of {userData.firstname} {userData.lastname}:
-            <p>{userData.biotext}</p>
+            Score of {userData.firstname} {userData.lastname}:
+            <p>{userData.scoretext}</p>
             <Friendbutton id={id} />
             <button onClick={goHome}>GO BACK HOME</button>
         </section>

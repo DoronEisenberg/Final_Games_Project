@@ -8,6 +8,7 @@ import Logout from "../logout/logout";
 import Uploader from "../uploader";
 import ProfilePic from "../ProfilePic/profilepic";
 import Profile from "../Profile/profile.jsx";
+import Game from "../Game/Game.jsx";
 import FindPeople from "../FindPeople/FindPeople.jsx";
 import OtherProfile from "../otherprofile/otherprofile";
 //import { Link } from "react-router-dom";
@@ -20,6 +21,7 @@ export default class App extends Component {
         };
         this.openSesmee = this.openSesmee.bind(this);
         this.handleclick = this.handleclick.bind(this);
+        this.openGames = this.openGames.bind(this);
     }
     // nevigate = useNavigate();
     //methods//
@@ -31,18 +33,22 @@ export default class App extends Component {
         this.setState({ isUploaderVisible: false });
     }
 
-    bioUpdate(bio) {
-        //console.log("bio uppdate", bio);
-        this.setState({
-            currentUser: {
-                ...this.state.currentUser,
-                bio: bio,
-            },
-        });
-    }
+    // bioUpdate(bio) {
+    //     //console.log("bio uppdate", bio);
+    //     this.setState({
+    //         currentUser: {
+    //             ...this.state.currentUser,
+    //             bio: bio,
+    //         },
+    //     });
+    // }
     /// to check another way to show the results of find people
     handleclick() {
         location.replace("/findpeople");
+    }
+
+    openGames() {
+        location.replace("/games");
     }
 
     profilePicUploaded(url) {
@@ -102,7 +108,9 @@ and at the end closing</Provider>
                                 <Profile
                                     openSesmee={this.openSesmee}
                                     user={this.state.currentUser}
-                                    bioUpdate={(bio) => this.bioUpdate(bio)}
+                                    scoreUpdate={(score) =>
+                                        this.scoreUpdate(score)
+                                    }
                                 />
                             }
                         ></Route>
@@ -121,13 +129,15 @@ and at the end closing</Provider>
                             path="../Profile/profile"
                             element={<Profile />}
                         />
+                        <Route path="/games" element={<Game />} />
                     </Routes>
                 </BrowserRouter>
 
                 {this.state.uploaderOpen && (
                     <Uploader user={this.state.currentUser} />
                 )}
-                <button onClick={this.handleclick}> Find People</button>
+                <button onClick={this.handleclick}> Find a new player</button>
+                <button onClick={this.openGames}> Go for a game...</button>
             </div>
         );
     }

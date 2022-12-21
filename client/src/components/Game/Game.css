@@ -1,0 +1,175 @@
+.Game-header {
+    background-color: #404652;
+    background-size: contain;
+    object-fit: contain;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    font-size: calc(10px + 2vmin);
+
+    color: white;
+}
+
+.Game-link {
+    color: #61dafb;
+}
+
+.ColorKeyboard {
+    display: flex;
+    object-fit: contain;
+    height: 300px;
+    /* // justify-content: space-between; */
+    width: 100%;
+}
+
+.gameWrapper {
+    display: flex;
+    gap: 50px;
+    background-size: contain;
+    width: 400px;
+}
+
+.startButton {
+    display: flex;
+    object-fit: contain;
+    background-color: #222;
+    border-radius: 6px;
+    border-style: none;
+    /* // box-sizing: border-box; */
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-family: "Farfetch Basis", "Helvetica Neue", Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.5;
+    margin: 0;
+    max-width: none;
+    min-height: 44px;
+    min-width: 10px;
+    outline: none;
+    overflow: hidden;
+    padding: 9px 20px 8px;
+    position: relative;
+    text-align: center;
+    text-transform: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    /* // width: 100%; */
+}
+
+.button-31:hover,
+.button-31:focus {
+    opacity: 0.75;
+}
+
+.score {
+    /* // position: absolute; */
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    background-color: rgb(63, 60, 60);
+    /* // border-radius: 50%; */
+    line-height: 100px;
+    font-size: 50px;
+}
+
+.lost {
+    /* Modify size here: */
+    --size: 450px;
+    --thickness: calc(var(--size) * 0.1);
+
+    position: relative;
+    text-align: center;
+    /* // height: calc(var(--size) * 0.47); */
+    /* // box-sizing: content-box; */
+
+    content: "";
+    box-sizing: content-box;
+    position: absolute;
+
+    top: 50px;
+    left: 30px;
+    width: calc(var(--size) * 0.28);
+    height: calc(var(--size) * 0.28);
+    /* // border: var(--thickness) solid #333; */
+    /* // border-radius: 50px 50px 0 50px; */
+    /* // transform: rotate(-45deg); */
+
+    left: calc(60% + var(--thickness));
+    /* // right: 0; */
+    border-radius: 50px 50px 50px 0;
+    transform: rotate(40deg);
+
+    border: 3px solid white;
+    border-radius: 5px;
+    /* // box-sizing: border-box; */
+}
+
+.orange {
+    background-color: #e69232;
+    display: flex;
+    border-radius: 20px;
+    background-size: contain;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset,
+        rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+}
+.orange.flash {
+    background-color: #d8c0a7;
+    display: flex;
+    background-size: contain;
+    border-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 60px 40px -7px;
+}
+.pink {
+    background-color: #e627cb;
+    display: flex;
+    background-size: contain;
+    border-radius: 20px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset,
+        rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+}
+.pink.flash {
+    background-color: #d09bcd;
+    display: flex;
+    background-size: contain;
+    border-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 60px 40px -7px;
+}
+
+.sky {
+    background-color: #3eb3e6;
+    display: flex;
+    background-size: contain;
+    border-radius: 20px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset,
+        rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+}
+.sky.flash {
+    background-color: #b7dce9;
+    display: flex;
+    background-size: contain;
+    border-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 60px 40px -7px;
+}
+
+.green {
+    background-color: #5ae62c;
+    display: flex;
+    background-size: contain;
+    border-radius: 20px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset,
+        rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+}
+
+.green.flash {
+    background-color: #bceda7;
+    display: flex;
+    background-size: contain;
+    border-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 60px 40px -7px;
+}

@@ -13,7 +13,7 @@ const {
     getUserByEmail,
     findUserById,
     addProfilePic,
-    addBio,
+    addScore,
     getThreeNewestUsers,
     getOthersBySearchQuery,
     getOtherProfileByIDParam,
@@ -110,6 +110,7 @@ app.post("/register", (req, res) => {
             }
         })
         .catch((err) => {
+            console.log("err", err);
             res.json({ success: false, error: err.detail });
         });
 });
@@ -197,12 +198,12 @@ app.post("/profilepic", uploader.single("file"), (req, res) => {
             console.log(err);
         });
 });
-//////////////    BIO   //////////////////////////////////
-app.post("/BioEditor", (req, res) => {
+//////////////    SCORE   //////////////////////////////////
+app.post("/ScoreEditor", (req, res) => {
     console.log("req.body", req.body, req.session.userId);
-    addBio({ bio: req.body.inputBio, id: req.session.userId })
+    addScore({ score: req.body.inputScore, id: req.session.userId })
         .then((user) => {
-            res.json({ success: true, message: user.bio });
+            res.json({ success: true, message: user.score });
         })
         .catch((err) => {
             console.log(err);
@@ -310,7 +311,7 @@ app.post("/acceptsFriendship/:id", (req, res) => {
     acceptsFriendship(otheruser, userId)
         .then((user) => {
             console.log("friendship accepted");
-            // res.json({ success: true, message: user.bio });
+            // res.json({ success: true, message: user.score });
         })
         .catch((err) => {
             console.log("ERROR IN ACCEPTING FRIEND: ", err);
