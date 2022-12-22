@@ -7,15 +7,20 @@ export default class Logo extends Component {
     render() {
         return (
             <div>
-                <img className="logo" src="/Logo.png" alt="logo" />
+                <header>
+                    <div className="componentone" />
+                    <img className="logo" src="/tenor1.gif" alt="logo" />
 
-                {this.props.user && (
-                    <p>
-                        Welcome back {this.props.user.firstname}{" "}
-                        {this.props.user.lastname}! lovely email!{" "}
-                        {this.props.user.email}
-                    </p>
-                )}
+                    {this.props.user && (
+                        <p>
+                            <br></br>
+                            Welcome back <br></br>
+                            {this.props.user.firstname} &nbsp;
+                            {this.props.user.lastname}!<br></br>E-mail:{" "}
+                            {this.props.user.email}
+                        </p>
+                    )}
+                </header>
             </div>
         );
     }

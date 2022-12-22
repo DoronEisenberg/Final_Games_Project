@@ -96,9 +96,7 @@ and at the end closing</Provider>
             <div>
                 <Logo user={this.state.currentUser} />
                 <ProfilePic user={this.state.currentUser} />
-
                 <Logout />
-
                 <BrowserRouter>
                     <Routes>
                         <Route
@@ -132,7 +130,6 @@ and at the end closing</Provider>
                         <Route path="/games" element={<Game />} />
                     </Routes>
                 </BrowserRouter>
-
                 {this.state.uploaderOpen && (
                     <Uploader user={this.state.currentUser} />
                 )}

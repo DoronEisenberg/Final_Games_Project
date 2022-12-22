@@ -27,20 +27,23 @@ export default class ProfilePic extends Component {
             this.props.user?.profilepic_url || "/ProfilePhotos/cats.JPG";
         return (
             <div>
-                {this.props.user && (
-                    <img
-                        className="profilePic"
-                        onClick={this.props.openSesmee}
-                        src={profilepic}
-                        alt={`${this.props.user.firstname} ${this.props.user.lastname}`}
-                    />
-                )}
-                {/* if truthy than render  */}
-                {this.props.user && (
-                    <p>
-                        {this.props.user.firstname} {this.props.user.lastname}
-                    </p>
-                )}
+                <header>
+                    {this.props.user && (
+                        <img
+                            className="profilePic"
+                            onClick={this.props.openSesmee}
+                            src={profilepic}
+                            alt={`${this.props.user.firstname} ${this.props.user.lastname}`}
+                        />
+                    )}
+                    {/* if truthy than render  */}
+                    {this.props.user && (
+                        <p>
+                            {this.props.user.firstname}{" "}
+                            {this.props.user.lastname}
+                        </p>
+                    )}
+                </header>
             </div>
         );
     }
