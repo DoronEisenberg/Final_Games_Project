@@ -5,15 +5,23 @@ export default function Logout() {
         fetch("/logout")
             .then((result) => result.json())
             .then(() => {
-                if (typeof handleChange == "undefined") {
+                if (typeof handleChange !== "undefined") {
                 }
-                location.reload();
+                location.replace("/");
             });
     };
-
+    const redirect = () => {
+        return <redirect to={{ pathname: "/" }} />;
+    };
     return (
         <>
-            <button className="logout-button" onClick={handleLogout}>
+            <button
+                className="logout-button"
+                onClick={() => {
+                    handleLogout();
+                    logoutfunc();
+                }}
+            >
                 logOut
             </button>
         </>

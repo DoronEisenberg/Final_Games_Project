@@ -119,15 +119,16 @@ and at the end closing</Provider>
                                 <OtherProfile user={this.state.currentUser} />
                             }
                         />
-                        <Route
-                            path="/logout"
-                            element={<Logout userID={this.state.userID} />}
-                        />
+
                         <Route
                             path="../Profile/profile"
                             element={<Profile />}
                         />
                         <Route path="/games" element={<Game />} />
+                        <Route
+                            path="/logout"
+                            element={<Logout userID={this.state.userID} />}
+                        />
                     </Routes>
                 </BrowserRouter>
                 {this.state.uploaderOpen && (

@@ -1,3 +1,17 @@
+body {
+    box-sizing: content-box;
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    margin: 0;
+}
+
+main {
+    margin: 0;
+    display: flex;
+    box-sizing: content-box;
+}
+
 .Game-header {
     background-color: #404652;
     background-size: contain;
@@ -27,6 +41,7 @@
 
 .gameWrapper {
     display: flex;
+    flex-wrap: nowrap;
     gap: 50px;
     /* background-size: 100%; */
     width: 400px;

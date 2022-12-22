@@ -41,6 +41,7 @@ body {
     flex-flow: row wrap;
 } */
 header {
+    width: 100%;
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
@@ -76,6 +77,15 @@ img.header {
     /* border: 1px solid #aee5d8; */
     margin: 45px;
 }
+header.Game-header {
+    display: flex;
+    /* width: 309px; */
+    flex-wrap: nowrap;
+}
+
+div.gameWrapper {
+    display: flex;
+}
 
 p {
     position: relative;
@@ -88,22 +98,30 @@ button.logout-button {
     text-decoration-style: solid;
     justify-content: flex-end;
 }
+div#welcome {
+    display: flex;
+    flex-wrap: nowrap;
+}
 
-*/ body {
+h1 {
+    display: flex;
+}
+
+body {
     background-color: rgb(202, 202, 202);
     flex-wrap: wrap;
-    /*flex-direction: row;
+    flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
     width: 100%;
-    height: 30;*/
+    height: 10;
 }
 
 main {
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     background-color: #404652;
     padding: 50px 50px 50px 50px;
     /* border: 5px solid #f9cfcb; */
@@ -124,10 +142,10 @@ button {
 
 footer {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
-    border: 5px solid #f9cfcb;
-    background-color: #9ca590;
+    /* border: 5px solid #f9cfcb;
+    background-color: #9ca590; */
     margin: 20px;
 }
 

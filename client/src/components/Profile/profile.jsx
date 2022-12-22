@@ -6,7 +6,8 @@ export default function Profile(props) {
     return (
         <section>
             <div className="profile">
-                <p>Here is the profile component</p>
+                <br></br>
+                <p>Profile </p>
                 {uploaderOpen && <uploader tools={props.tools} />}
                 <ProfilePic openSesmee={props.openSesmee} user={props.user} />
                 {/* <ScoreEditor user={props.user} scoreUpdate={props.scoreUpdate} /> */}
