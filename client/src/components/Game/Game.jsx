@@ -142,9 +142,20 @@ function Game() {
     }
 
     function closeHandle() {
+        submitScore();
         setIsOn(false);
     }
 
+    function submitScore() {
+        console.log("score", play.score);
+        fetch("/ScoreEditor", {
+            method: "POST",
+            body: JSON.stringify({ score: play.score }),
+            headers: { "Content-Type": "application/json" },
+        })
+            .then((results) => results.json())
+            .then((results) => console.log(results));
+    }
     return (
         <div className="Game">
             <header className="Game-header">
@@ -172,6 +183,7 @@ function Game() {
                         </div>
                         <div>{gameOver(theend)}</div>{" "}
                         {/* play sound Game over*/}
+                        {/* <button onClick={}>submitResult</button> */}
                         <button onClick={closeHandle}>Start Again</button>
                     </div>
                 )}

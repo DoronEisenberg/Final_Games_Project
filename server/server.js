@@ -200,10 +200,12 @@ app.post("/profilepic", uploader.single("file"), (req, res) => {
 });
 //////////////    SCORE   //////////////////////////////////
 app.post("/ScoreEditor", (req, res) => {
-    console.log("req.body", req.body, req.session.userId);
-    addScore({ score: req.body.inputScore, id: req.session.userId })
+    console.log("scoreEditor req.body", req.body, req.session);
+    const { score } = req.body;
+    const userId = req.session.userId;
+    addScore(score, userId)
         .then((user) => {
-            res.json({ success: true, message: user.score });
+            return res.json({ success: true, message: user.score });
         })
         .catch((err) => {
             console.log(err);

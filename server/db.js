@@ -96,8 +96,8 @@ function addProfilePic(url, id) {
         });
 }
 
-function addScore({ score, id }) {
-    //console.log("score, id", score, id);
+function addScore(score, id) {
+    console.log("score, id", score, id);
     return db
         .query(
             `UPDATE users 
